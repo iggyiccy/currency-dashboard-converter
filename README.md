@@ -2,6 +2,8 @@
 
 FinTech Boot Camp Project 1 - 29/6/21 - 12/7/21
 
+![bitcoin-world-map](Images/bitcoin_world_map.png)
+
 ## Project title: The R2S2 currency converter 
 
 ### Team members: Simon Sakkal, Richard Patriquin, Regina Chow and Siddhesh Tungare
