@@ -48,7 +48,7 @@ FinTech Boot Camp Project 1 - 29/6/21 - 12/7/21
 
 pn.extension('deckgl')
 
-
+mapbox_style = "mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w"
 
                 dcc.Graph(id="county-choropleth",
                         figure=dict(

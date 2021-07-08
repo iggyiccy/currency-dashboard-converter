@@ -12,7 +12,6 @@ from pycoingecko import CoinGeckoAPI
 pn.extension("plotly")
 
 mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
-## mapbox_style = "mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w"
 px.set_mapbox_access_token(mapbox_access_token)
 
 ########  ----- Get the countries data - geocodes, currency codes, etc, saved in a CSV - concap.csv  -----
