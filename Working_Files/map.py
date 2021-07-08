@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from pycoingecko import CoinGeckoAPI
 pn.extension("plotly")
 
-mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
+mapbox_access_token = "pk.eyJ1IjoiaWdneWljY3kiLCJhIjoiY2twcnkwenNsMDhmbzJvcGlvMG5ubXZzdiJ9.fQS12Ag0w2tx0aFcNsYV1Q"
 mapbox_style = "mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w"
 px.set_mapbox_access_token(mapbox_access_token)
 
@@ -122,13 +122,6 @@ map1 = px.scatter_mapbox(
 )
 
 def show_map(): 
-    map1 = px.scatter_mapbox(
-        df_plot,
-        lat="CapitalLatitude",
-        lon="CapitalLongitude",
-        color="ContinentName",
-        hover_name='CountryName',
-        hover_data= hover_data, #['CapitalName', 'Curr_code' ],
-        zoom = 2,
-        mapbox_style='basic',
-        height=1000)
+    map1.show()
+
+show_map()

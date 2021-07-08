@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from pycoingecko import CoinGeckoAPI
 pn.extension("plotly")
 
-mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
+mapbox_access_token = "pk.eyJ1IjoiaWdneWljY3kiLCJhIjoiY2twcnkwenNsMDhmbzJvcGlvMG5ubXZzdiJ9.fQS12Ag0w2tx0aFcNsYV1Q"
 px.set_mapbox_access_token(mapbox_access_token)
 
 ########  ----- Get the countries data - geocodes, currency codes, etc, saved in a CSV - concap.csv  -----
