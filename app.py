@@ -114,13 +114,38 @@ map1 = px.scatter_mapbox(
     df_plot,
     lat="CapitalLatitude",
     lon="CapitalLongitude",
-    color="ContinentName",
+    color="Score_chg",
     hover_name='CountryName',
     hover_data= hover_data, #['CapitalName', 'Curr_code' ],
     zoom = 2,
     mapbox_style='basic',
     height=1000
 )
+
+#------------------------------------------------------  CONVERTER  ------------------------------------------------------
+
+#Crypto API URLs
+btc_url = "https://api.alternative.me/v2/ticker/Bitcoin/?convert=AUD"
+eth_url = "https://api.alternative.me/v2/ticker/Ethereum/?convert=AUD"
+btc_url = btc_url + "?format=json"
+eth_url = eth_url + "?format=json"
+# Fetch current BTC price
+btc_price = api.get(btc_url)
+# Fetch current ETH price
+eth_price = api.get(eth_url)
+btc_response = btc_price.content
+eth_response = eth_price.content
+btc_data = btc_price.json()
+eth_data = eth_price.json()
+btc_price = btc_data['data']['1']['quotes']['USD']['price']
+eth_price = eth_data['data']['1027']['quotes']['USD']['price']
+
+# Create Dataframe for ETH and BTC
+df_eth_btc = pd.DataFrame(columns=['crypto', 'USD', 'AUD'], index=None)
+df_eth_btc = df_eth_btc.append(pd.Series(['ETH', eth_price, '12000'], index= df_eth_btc.columns), ignore_index=True)
+df_eth_btc = df_eth_btc.append(pd.Series(['BTC', btc_price, '32000'], index= df_eth_btc.columns), ignore_index=True)
+df_eth_btc.set_index('crypto', inplace=True)
+
 
 #------------------------------------------------------ DASHBOARD BELOW ------------------------------------------------------
 
@@ -155,8 +180,8 @@ SIDEBAR_STYLE = {
 
 # padding for the page content
 CONTENT_STYLE = {
-    "margin-left": "20rem",
-    "margin-right": "2rem",
+    "margin-left": "24rem",
+    "margin-right": "3rem",
     "padding": "2rem 1rem",
 }
 
@@ -172,9 +197,9 @@ sidebar = html.Div(
         ),
         dbc.Nav(
             [
-                dbc.NavLink("Local Price", href="/", active="exact"),
-                dbc.NavLink("Analysis", href="/page-1", active="exact"),
-                dbc.NavLink("Converter", href="/page-2", active="exact"),
+                dbc.NavLink("🌍 Local Price", href="/", active="exact"),
+                dbc.NavLink("💹 Analysis", href="/page-1", active="exact"),
+                dbc.NavLink("💱 Converter", href="/page-2", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -203,13 +228,13 @@ app.layout = html.Div([
 def render_page_content(pathname):
     if pathname == "/":
         return [
-                html.H1('Cryptocurrency Price in Your Local Currency',
+                html.H1('🌍 Cryptocurrency Price in Your Local Currency',
                         style={'textAlign':'center'}),
                 dcc.Graph(id='bargraph', figure=map1)
                 ]
     elif pathname == "/page-1":
         return [
-                html.H1('Major Cryptocurrency Trend and Analysis',
+                html.H1('💹 Major Cryptocurrency Trend and Analysis',
                         style={'textAlign':'center'}),
                 dcc.Graph(id='bargraph',
                          figure=px.bar(df, barmode='group', x='Years',
@@ -217,11 +242,61 @@ def render_page_content(pathname):
                 ]
     elif pathname == "/page-2":
         return [
-                html.H1('Cryptocurrency Converter',
+                html.H1('💱 Cryptocurrency Converter',
                         style={'textAlign':'center'}),
-                dcc.Graph(id='bargraph',
-                         figure=px.bar(df, barmode='group', x='Years',
-                         y=['Girls High School', 'Boys High School']))
+                dcc.Input(id="input1", type="text", placeholder="", style={'marginRight':'10px'}),
+                dcc.Input(id="input2", type="text", placeholder="", debounce=True),
+                html.Div(id="output"),
+                dbc.CardGroup(
+                    [
+                        dbc.Card(
+                            dbc.CardBody(
+                                [
+                                    html.H5("Card 1", className="card-title"),
+                                    html.P(
+                                        "This card has some text content, which is a little "
+                                        "bit longer than the second card.",
+                                        className="card-text",
+                                    ),
+                                    dbc.Button(
+                                        "Click here", color="success", className="mt-auto"
+                                    ),
+                                ]
+                            )
+                        ),
+                        dbc.Card(
+                            dbc.CardBody(
+                                [
+                                    html.H5("Card 2", className="card-title"),
+                                    html.P(
+                                        "This card has some text content.",
+                                        className="card-text",
+                                    ),
+                                    dbc.Button(
+                                        "Click here", color="warning", className="mt-auto"
+                                    ),
+                                ]
+                            )
+                        ),
+                        dbc.Card(
+                            dbc.CardBody(
+                                [
+                                    html.H5("Card 3", className="card-title"),
+                                    html.P(
+                                        "This card has some text content, which is longer "
+                                        "than both of the other two cards, in order to "
+                                        "demonstrate the equal height property of cards in a "
+                                        "card group.",
+                                        className="card-text",
+                                    ),
+                                    dbc.Button(
+                                        "Click here", color="danger", className="mt-auto"
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+)
                 ]
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
@@ -232,6 +307,13 @@ def render_page_content(pathname):
         ]
     )
 
+@app.callback(
+    Output("output", "children"),
+    Input("input1", "value"),
+    Input("input2", "value"),
+)
+def update_output(input1, input2):
+    return u'Input 1 {} and Input 2 {}'.format(input1, input2)
 
 if __name__=='__main__':
     app.run_server(debug=True, port=3000)
