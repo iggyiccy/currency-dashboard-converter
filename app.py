@@ -118,7 +118,7 @@ map1 = px.scatter_mapbox(
     hover_name='CountryName',
     hover_data= hover_data, #['CapitalName', 'Curr_code' ],
     zoom = 2,
-    mapbox_style='basic',
+    mapbox_style='mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w',
     height=1000
 )
 
@@ -244,54 +244,46 @@ def render_page_content(pathname):
         return [
                 html.H1('💱 Cryptocurrency Converter',
                         style={'textAlign':'center'}),
-                dcc.Input(id="input1", type="text", placeholder="", style={'marginRight':'10px'}),
-                dcc.Input(id="input2", type="text", placeholder="", debounce=True),
-                html.Div(id="output"),
+                html.Hr(),
+                dbc.Alert(
+                    [html.H2("Let's Start Converting!", className="alert-heading"),
+                        html.P(
+                            "This is a success alert with loads of extra text in it. So much "
+                            "that you can see how spacing within an alert works with this "
+                            "kind of content."
+                        ),
+                        html.Hr(),
+                        html.P(
+                            "Let's put some more text down here, but remove the bottom margin",
+                            className="mb-0",),
+                    ], color="light"),
                 dbc.CardGroup(
                     [
                         dbc.Card(
                             dbc.CardBody(
                                 [
-                                    html.H5("Card 1", className="card-title"),
-                                    html.P(
-                                        "This card has some text content, which is a little "
-                                        "bit longer than the second card.",
-                                        className="card-text",
-                                    ),
-                                    dbc.Button(
-                                        "Click here", color="success", className="mt-auto"
-                                    ),
+                                    dbc.Button(html.H4("$USD"), className="btn-outline-success", color="white"),
+                                    html.Hr(),
+                                    html.P("Input $USD amount below to convert:", className="card-text",),
+                                    dbc.Input(id="input", type="text", placeholder="$1000.00", debounce=False, style={'marginRight':'10px'}, bs_size="lg"),
                                 ]
                             )
                         ),
                         dbc.Card(
                             dbc.CardBody(
                                 [
-                                    html.H5("Card 2", className="card-title"),
-                                    html.P(
-                                        "This card has some text content.",
-                                        className="card-text",
-                                    ),
-                                    dbc.Button(
-                                        "Click here", color="warning", className="mt-auto"
-                                    ),
+                                    dbc.Button(html.H4("$BTC"), className="btn-outline-warning", color="white"),
+                                    html.Hr(),
+                                    html.P("Amount in $BTC:", className="card-text",),
                                 ]
                             )
                         ),
                         dbc.Card(
                             dbc.CardBody(
                                 [
-                                    html.H5("Card 3", className="card-title"),
-                                    html.P(
-                                        "This card has some text content, which is longer "
-                                        "than both of the other two cards, in order to "
-                                        "demonstrate the equal height property of cards in a "
-                                        "card group.",
-                                        className="card-text",
-                                    ),
-                                    dbc.Button(
-                                        "Click here", color="danger", className="mt-auto"
-                                    ),
+                                    dbc.Button(html.H4("$ETH"), className="btn-outline-danger", color="white"),
+                                    html.Hr(),
+                                    html.P("Amount in $ETH:", className="card-text",),
                                 ]
                             )
                         ),
@@ -309,11 +301,10 @@ def render_page_content(pathname):
 
 @app.callback(
     Output("output", "children"),
-    Input("input1", "value"),
-    Input("input2", "value"),
+    Input("input", "value"),
 )
-def update_output(input1, input2):
-    return u'Input 1 {} and Input 2 {}'.format(input1, input2)
+def update_output(input1):
+    return u'Input 1 {}'.format(input)
 
 if __name__=='__main__':
     app.run_server(debug=True, port=3000)

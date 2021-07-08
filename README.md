@@ -48,14 +48,8 @@ FinTech Boot Camp Project 1 - 29/6/21 - 12/7/21
 
 pn.extension('deckgl')
 
-mapbox_style = "mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w"
-
-                dcc.Graph(id="county-choropleth",
-                        figure=dict(
-                            layout=dict(
-                                mapbox=dict(
-                                layers=[],
-                                accesstoken=mapbox_access_token,
-                                style=mapbox_style,
-                                center=dict(lat=38.72490, lon=-95.61446),pitch=0,zoom=3.5,),
-                                autosize=True,),),),
+https://dash-gallery.plotly.host/Portal/
+https://getbootstrap.com/docs/4.0/components/buttons/
+https://bootstrap.build/app
+https://dash-bootstrap-components.opensource.faculty.ai/
+https://dash.plotly.com/dash-core-components/tab
