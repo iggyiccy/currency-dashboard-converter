@@ -42,3 +42,20 @@ FinTech Boot Camp Project 1 - 29/6/21 - 12/7/21
     - plot 7: xxx 
     - plot 8: xxx
 - tab 3: currency converter (richard)
+
+
+## Note
+
+pn.extension('deckgl')
+
+
+
+                dcc.Graph(id="county-choropleth",
+                        figure=dict(
+                            layout=dict(
+                                mapbox=dict(
+                                layers=[],
+                                accesstoken=mapbox_access_token,
+                                style=mapbox_style,
+                                center=dict(lat=38.72490, lon=-95.61446),pitch=0,zoom=3.5,),
+                                autosize=True,),),),
