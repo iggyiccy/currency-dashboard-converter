@@ -29,3 +29,33 @@ FinTech Boot Camp Project 1 - 29/6/21 - 12/7/21
 * Richard – API’s
 * Regina – create repo and github management
 * Siddhesh – coding
+
+- Dashboard -
+- tab 1: Advance mapbox (plots) (regina)
+- tab 2:  
+    - plot 1: historical price trends plot (simon)
+    - plot 2: sharp ratio plot (bond vs crypto vs stocks vs gold/sliver) (siddhest)
+    - plot 3: RSI plot
+    - plot 4: historical market volumn plot
+    - plot 5: bitcoin domainance index plot
+    - plot 6: xxx
+    - plot 7: xxx 
+    - plot 8: xxx
+- tab 3: currency converter (richard)
+
+
+## Note
+
+pn.extension('deckgl')
+
+mapbox_style = "mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w"
+
+                dcc.Graph(id="county-choropleth",
+                        figure=dict(
+                            layout=dict(
+                                mapbox=dict(
+                                layers=[],
+                                accesstoken=mapbox_access_token,
+                                style=mapbox_style,
+                                center=dict(lat=38.72490, lon=-95.61446),pitch=0,zoom=3.5,),
+                                autosize=True,),),),
