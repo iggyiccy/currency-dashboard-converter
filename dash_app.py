@@ -27,6 +27,7 @@ df_exchanges_data = Functions_data_graphs.get_exchanges_data()
 
 #------------------------------------------------------Get the 5 year  plot-------------------------------------------------------
 
+plot_5_year_fig = Functions_data_graphs.plot_5_year_plot()
 
 #-------------------------------------------------------Converter data--------------------------------------------------------
 
@@ -154,7 +155,8 @@ def render_page_content(pathname):
         children = [
                 html.H1('💹 Major Cryptocurrency Trend and Analysis',
                         style={'textAlign':'center'}),
-                html.Hr()
+                html.Hr(), 
+                dcc.Graph(id='linegraph', figure=plot_5_year_fig)
         ]
 
         return children

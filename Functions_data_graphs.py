@@ -268,3 +268,19 @@ def get_hist_chart(coin, curr, days='60'):
     fig = px.line(df_data, x='date', y="close", title= title )
 
     return fig
+
+def plot_5_year_plot():
+
+    df_ticker_low = yf.download(['BTC-USD' , 'ETH-USD', 'DOGE-USD', 'ADA-USD', 'MATIC-USD'], period='5y', group_by= 'ticker', dtype= object)
+
+    df_closing_prices = pd.DataFrame()
+    df_closing_prices["BTC"] = df_ticker_low["BTC-USD"]["Close"]
+    df_closing_prices["ETH"] = df_ticker_low["ETH-USD"]["Close"]
+    df_closing_prices["DOGE"] = df_ticker_low["DOGE-USD"]["Close"]
+    df_closing_prices["ADA"] = df_ticker_low["ADA-USD"]["Close"]
+    df_closing_prices["MATIC"] = df_ticker_low["MATIC-USD"]["Close"]
+    df_closing_prices.index = df_ticker_low.index.date
+
+    fig = px.line(df_closing_prices, y=["BTC", "ETH", "DOGE", "ADA", "MATIC"], title= '5 year plot' )
+
+    return fig
