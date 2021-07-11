@@ -115,7 +115,7 @@ sidebar = html.Div(
                 dbc.NavLink("🌍 Local Price", href="/", active="exact"),
                 dbc.NavLink("💹 Analysis", href="/page-1", active="exact"),
                 dbc.NavLink("💱 Converter", href="/page-2", active="exact"),
-                dbc.NavLink("⏳ Crypto Updates", href="/page-3", active="exact"),
+                dbc.NavLink("⏰ Crypto Updates", href="/page-3", active="exact"),
                 dbc.NavLink("📋 Exchanges Report", href="/page-4", active="exact"),
             ],
             vertical=True,
@@ -126,7 +126,73 @@ sidebar = html.Div(
 )
 
 # define content variables
-content = html.Div(id="page-content", children=[], style=CONTENT_STYLE)
+content = html.Div(
+    children=[
+        dcc.Loading(
+            id="loading-1",
+            type="default",
+            children=html.Div(id="page-content")
+        ),
+    ], style=CONTENT_STYLE)
+
+# Style page 4 cards
+
+first_card = dbc.Card(
+    dbc.CardBody(
+        [
+            html.Br(),
+            html.Br(),
+            html.H3('Comparison by trading volume'),
+            html.Div([dcc.Graph(id='exchangePie'),]),
+        ]
+    )
+)
+
+
+second_card = dbc.Card(
+    dbc.CardBody(
+        [
+            dbc.Alert("This report is to provide users more information about the exchanges that they can use to buy/sell cryptocurrencies.", color="primary"),
+            html.Div([ 
+                    dash_table.DataTable(
+                    id='exchangeTab',
+                    data=df_exchanges_data.to_dict('records'),
+                    columns=[
+                    {'name': 'Rank', 'id': 'Rank'},
+                    {'name': 'Logo', 'id': 'Logo', "presentation": "markdown"},
+                    {'name': 'ID', 'id': 'ID'},
+                    {'name': 'Name', 'id': 'Name'},
+                    {'name': 'URL', 'id': 'URL', "presentation": "markdown"},
+                    {'name': 'Trading Vol. (in USD) - 24 Hours', 'id': 'trade_volume_24h_btc'},
+                    ],
+                    editable=False,
+                    sort_action="native",
+                    sort_mode="multi",
+                    row_selectable="multi",
+                    row_deletable=False,
+                    selected_rows=[],
+                    page_action="native",
+                    style_cell={'whiteSpace': 'normal','word-break': 'break-all',},
+                    fixed_rows={ 'headers': True, 'data': 0 },
+                    virtualization=False,
+                                    style_cell_conditional=[
+                                        {'if': {'column_id': 'Rank'},
+                                        'width': '10%', 'textAlign': 'center'},
+                                        {'if': {'column_id': 'Logo'},
+                                        'width': '5%', 'textAlign': 'left'},
+                                        {'if': {'column_id': 'ID'},
+                                        'width': '10%', 'textAlign': 'left'},
+                                        {'if': {'column_id': 'Name'},
+                                        'width': '45%', 'textAlign': 'left'},
+                                        {'if': {'column_id': 'URL'},
+                                        'width': '5%', 'textAlign': 'left'},
+                                        {'if': {'column_id': 'trade_volume_24h_btc'},
+                                        'width': '25%', 'textAlign': 'left'},],
+                        ),
+            ],)
+        ]
+    )
+)
 
 #------------------------------------------------------ APP ------------------------------------------------------ 
 
@@ -147,6 +213,9 @@ def render_page_content(pathname):
         children = [
                 html.H1('🌍 Cryptocurrency Price in Your Local Currency',
                         style={'textAlign':'center'}),
+                html.Br(),
+                html.Hr(),
+                html.Br(),
                 dcc.Graph(id='map', figure=map1)
         ]
 
@@ -155,7 +224,8 @@ def render_page_content(pathname):
         children = [
                 html.H1('💹 Major Cryptocurrency Trend and Analysis',
                         style={'textAlign':'center'}),
-                html.Hr(), 
+                html.Br(),
+                html.Hr(),
                 dcc.Graph(id='linegraph', figure=plot_5_year_fig)
         ]
 
@@ -164,7 +234,9 @@ def render_page_content(pathname):
         children = [
                 html.H1('💱 Cryptocurrency Converter',
                         style={'textAlign':'center'}),
+                html.Br(),
                 html.Hr(),
+                html.Br(),
                 dbc.Alert(
                     [html.H2("Let's Start Converting!", className="alert-heading"),
                         html.P(
@@ -216,28 +288,22 @@ def render_page_content(pathname):
                 html.Hr(style={'border':'10px solid white'}),
                 dbc.Card(
                     [
-                        dbc.CardHeader("Select which currency you want to buy ⬇"),
+                        dbc.CardHeader(html.H4("More! ⬇ Pick your currency, We will convert it for you! ", className="card-title")),
                         dbc.CardBody(
-                            [
-                                html.H4("Card title", className="card-title"),
-                                html.P("This is some card text", className="card-text"),
+                            [dbc.Form([
+                                dbc.FormGroup([
+                                dbc.Label("Cryptocurrency:", html_for="dropdown"),
+                                dbc.Dropdown(
+                                            options= [{'label': i, 'value':i } for i in crypto_coins],
+                                            value='bitcoin',
+                                            multi=False,
+                                            clearable=False),], style={'width': '15%', 'display': 'inline-block', 'marginBottom': 25, 'marginTop': 5}, className='six columns'),
+                                ]),
                             ]
                         ),
-                        dbc.CardFooter("This is the footer"),
-                    ],
-                    color="primary", outline=True, style={'border-radius':'25px','border':'2px solid'}
+                    ], color="primary", outline=True, style={'border-radius':'25px','border':'2px solid'}
                 ),
-                html.Div( [
-                    dcc.Dropdown(id='conv_cryp_drop',
-                            options= [ 
-                                {'label': i, 'value':i } for i in crypto_coins
-                            ],
-                            value='bitcoin',
-                            multi=False,
-                            clearable=False
-                        ),
-                    ], style={'width': '15%', 'display': 'inline-block', 'marginBottom': 25, 'marginTop': 5},
-                    className='six columns'),
+
 
                 # For the dropdown - Fiat
                 html.H6('Select the Fiat currency you want to buy the crypto with'),
@@ -279,13 +345,15 @@ def render_page_content(pathname):
         return children
     elif pathname == "/page-3":
         children = [
-                html.H1('⏳ Cryptocurrencies Status Updates',
+                html.H1('⏰ Cryptocurrencies Status Updates',
                         style={'textAlign':'center'}),
                 html.Div([
                     html.Br(),
+                    html.Hr(),
                     html.Br(),
+                    dbc.Alert("😁 A collection of altcoins lastest news / maintainance alert / update! Everything you need in a single dashboard :)", color="info", style={'text-align': 'center'}),
                     # For the dropdown
-                    html.H6('Select the category to view the corresponding updates'),
+                    html.H6('Select the category to view the corresponding updates', style = {'text-align': 'center'}),
                     html.Div( [
                         dcc.Dropdown(id='linedropdown',
                                 options=[
@@ -298,7 +366,7 @@ def render_page_content(pathname):
                                 multi=False,
                                 clearable=False
                             ),
-                        ], style={'width': '15%', 'display': 'inline-block', 'marginBottom': 50, 'marginTop': 5},
+                        ], style={'width': '15%', 'display': 'inline-block', 'marginBottom': 50, 'marginTop': 5, 'text-align': 'center', 'display': 'block', 'margin-left': 'auto', 'margin-right': 'auto'},
                         className='six columns'),
 
                     # For the datatable
@@ -347,69 +415,16 @@ def render_page_content(pathname):
         children = [
                 html.H1('📋 Cryptocurrencies Exchanges Report',
                         style={'textAlign':'center'}),
-                html.Div([
-                    html.Br(),
-                    html.Br(),
-                    # For the datatable
-                    html.H3('This report is to provide users more information about the exchanges that they can use to buy/sell cryptocurrencies'),
-                    # For the datatable
-                    html.Div([ 
-                        dash_table.DataTable(
-                            id='exchangeTab',
-                            data=df_exchanges_data.to_dict('records'),
-                            columns=[
-                                {'name': 'Rank', 'id': 'Rank'},
-                                {'name': 'Logo', 'id': 'Logo', "presentation": "markdown"},
-                                {'name': 'ID', 'id': 'ID'},
-                                {'name': 'Name', 'id': 'Name'},
-                                {'name': 'URL', 'id': 'URL', "presentation": "markdown"},
-                                {'name': 'Trading Vol. (in USD) - 24 Hours', 'id': 'trade_volume_24h_btc'},
-                            ],
-                            editable=False,
-                            sort_action="native",
-                            sort_mode="multi",
-                            row_selectable="multi",
-                            row_deletable=False,
-                            selected_rows=[],
-                            page_action="native",
-                            # page_current= 0,
-                            # page_size= 5,
-                            style_cell={
-                            'whiteSpace': 'normal',
-                            'word-break': 'break-all',
-                            },
-                            fixed_rows={ 'headers': True, 'data': 0 },
-                            virtualization=False,
-                            style_cell_conditional=[
-                                {'if': {'column_id': 'Rank'},
-                                'width': '10%', 'textAlign': 'center'},
-                                {'if': {'column_id': 'Logo'},
-                                'width': '10%', 'textAlign': 'left'},
-                                {'if': {'column_id': 'ID'},
-                                'width': '10%', 'textAlign': 'left'},
-                                {'if': {'column_id': 'Name'},
-                                'width': '45%', 'textAlign': 'left'},
-                                {'if': {'column_id': 'URL'},
-                                'width': '10%', 'textAlign': 'left'},
-                                {'if': {'column_id': 'trade_volume_24h_btc'},
-                                'width': '15%', 'textAlign': 'left'},
-                            ],
-                        ), 
-                    ],className='six columns'),
-                # For the piechart
-                html.Div([
-                    html.Br(),
-                    html.Br(),
-                    html.H3('Comparison by trading volume'),
-                    html.Div([
-                        dcc.Graph(id='exchangePie'),
-                    ],className='six columns'),
-
-                ],  style={'width': '40%', 'display': 'inline-block', 'marginBottom': 50, 'marginTop': 5},
-                className='row'),
-
-                ])
-                ]
+                html.Br(),
+                html.Hr(),
+                html.Br(),
+                dbc.Row(
+                    [
+                        dbc.Col(first_card, width=4),
+                        dbc.Col(second_card, width=8),
+                    ]
+                )
+            ]
         return children
     else:
         # If the user tries to reach a different page, return a 404 message
