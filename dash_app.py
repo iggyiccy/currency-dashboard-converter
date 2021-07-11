@@ -28,7 +28,7 @@ df_exchanges_data = Functions_data_graphs.get_exchanges_data()
 #------------------------------------------------------Get the 5 year  plot-------------------------------------------------------
 
 #Code to import and download 5 years worth of pricing data (USD) for Bitcoin (BTC), Etherium (ETH), Dogecoin (DOGE), Cardano (ADA) and Polygon (MATIC).
-df_ticker_low = yf.download(['BTC-USD' , 'ETH-USD', 'DOGE-USD', 'ADA-USD', 'MATIC-USD'], period='5y', group_by= 'ticker', dtype= object)
+df_ticker_low = pd.read_csv('Data/df_ticker_low.csv', index_col=None)
 
 # Coding to create a new data which displays only closing prices for BTC, ETH, DOGE, ADA and MATIC
 df_closing_prices = pd.DataFrame()
@@ -206,7 +206,7 @@ def render_page_content(pathname):
                                     dbc.Button(html.H4("$BTC"), className="btn-outline-warning", color="white", style={'border':'2px solid'}),
                                     html.Hr(),
                                     html.P("Amount in $BTC:", className="card-text",),
-                                    dbc.InputGroup([dbc.InputGroupAddon("Amount", addon_type="prepend"), dbc.Input(id="btc", type="number", placeholder=f"current price ${eth_price}", style={'marginRight':'10px', 'background':'white'}, bs_size="lg", disabled = True)], size="lg",),
+                                    dbc.InputGroup([dbc.InputGroupAddon("Amount", addon_type="prepend"), dbc.Input(id="btc", type="number", placeholder=f"current price ${btc_price}", style={'marginRight':'10px', 'background':'white'}, bs_size="lg", disabled = True)], size="lg",),
                                 ]
                             )
                         , color="warning", outline=True, style={'border-radius':'25px','border':'2px solid'}),
@@ -216,7 +216,7 @@ def render_page_content(pathname):
                                     dbc.Button(html.H4("$ETH"), className="btn-outline-danger", color="white", style={'border':'2px solid'}),
                                     html.Hr(),
                                     html.P("Amount in $ETH:", className="card-text",),
-                                    dbc.InputGroup([dbc.InputGroupAddon("Amount", addon_type="prepend"), dbc.Input(id="eth", type="number", placeholder=f"current price ${btc_price}", style={'marginRight':'10px', 'background':'white'}, bs_size="lg", disabled = True)], size="lg",),
+                                    dbc.InputGroup([dbc.InputGroupAddon("Amount", addon_type="prepend"), dbc.Input(id="eth", type="number", placeholder=f"current price ${eth_price}", style={'marginRight':'10px', 'background':'white'}, bs_size="lg", disabled = True)], size="lg",),
                                 ]
                             )
                         , color="danger", outline=True, style={'border-radius':'25px','border':'2px solid'}),

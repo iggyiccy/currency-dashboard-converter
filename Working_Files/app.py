@@ -190,7 +190,7 @@ CONTENT_STYLE = {
 # define sidebar variables
 sidebar = html.Div(
     [
-        html.H2("Currency Convertor", className="display-4"),
+        html.H2("Currency Converter", className="display-4"),
         html.Hr(),
         html.P(
             "FinTech Boot Camp Project 1 Presentation", className="lead"
