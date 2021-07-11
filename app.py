@@ -158,7 +158,7 @@ import dash
 import dash_bootstrap_components as dbc
 import dash_html_components as html
 import dash_core_components as dcc
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 
 
 df = pd.read_csv('https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Bootstrap/Side-Bar/iranian_students.csv')
@@ -257,39 +257,42 @@ def render_page_content(pathname):
                             "Let's put some more text down here, but remove the bottom margin",
                             className="mb-0",),
                     ], color="light"),
-                dbc.CardGroup(
+                dbc.CardDeck(
                     [
                         dbc.Card(
                             dbc.CardBody(
                                 [
-                                    dbc.Button(html.H4("$USD"), className="btn-outline-success", color="white"),
+                                    dbc.Button(html.H4("$USD"), className="btn-outline-success", color="white", style={'border':'2px solid'}),
                                     html.Hr(),
                                     html.P("Input $USD amount below to convert:", className="card-text",),
-                                    dbc.Input(id="input", type="text", placeholder="$1000.00", debounce=False, style={'marginRight':'10px'}, bs_size="lg"),
+                                    dbc.InputGroup([dbc.InputGroupAddon("Amount", addon_type="prepend"), dbc.Input(value=0.0, id="usd", type="number", placeholder="$1000.00", debounce=False, style={'marginRight':'10px'}, bs_size="lg")], size="lg",),
                                 ]
                             )
-                        ),
+                        , color="success", outline=True, style={'border-radius':'25px','border':'2px solid'}),
                         dbc.Card(
                             dbc.CardBody(
                                 [
-                                    dbc.Button(html.H4("$BTC"), className="btn-outline-warning", color="white"),
+                                    dbc.Button(html.H4("$BTC"), className="btn-outline-warning", color="white", style={'border':'2px solid'}),
                                     html.Hr(),
                                     html.P("Amount in $BTC:", className="card-text",),
+                                    dbc.InputGroup([dbc.InputGroupAddon("Amount", addon_type="prepend"), dbc.Input(value=btc_price, id="btc", type="number", placeholder=f"current price ${eth_price}", style={'marginRight':'10px', 'background':'white'}, bs_size="lg", disabled = True)], size="lg",),
                                 ]
                             )
-                        ),
+                        , color="warning", outline=True, style={'border-radius':'25px','border':'2px solid'}),
                         dbc.Card(
                             dbc.CardBody(
                                 [
-                                    dbc.Button(html.H4("$ETH"), className="btn-outline-danger", color="white"),
+                                    dbc.Button(html.H4("$ETH"), className="btn-outline-danger", color="white", style={'border':'2px solid'}),
                                     html.Hr(),
                                     html.P("Amount in $ETH:", className="card-text",),
+                                    dbc.InputGroup([dbc.InputGroupAddon("Amount", addon_type="prepend"), dbc.Input(value=eth_price, id="eth", type="number", placeholder=f"current price ${btc_price}", style={'marginRight':'10px', 'background':'white'}, bs_size="lg", disabled = True)], size="lg",),
                                 ]
                             )
-                        ),
+                        , color="danger", outline=True, style={'border-radius':'25px','border':'2px solid'}),
                     ]
-)
-                ]
+                )
+            ]
+
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
         [
@@ -299,12 +302,25 @@ def render_page_content(pathname):
         ]
     )
 
+
 @app.callback(
-    Output("output", "children"),
-    Input("input", "value"),
+    Output("usd", "value"),
+    Output("eth", "value"),
+    Output("btc", "value"),
+    Input("usd", "value"),
+    Input("eth", "value"),
+    Input("btc", "value"),
 )
-def update_output(input1):
-    return u'Input 1 {}'.format(input)
+def sync_input(usd, eth, btc):
+    ctx = dash.callback_context
+    input_id = ctx.triggered[0]["prop_id"].split(".")[0]
+    if input_id == "usd":
+        eth = None if usd is None else (float(usd) / eth_price)
+        btc = None if usd is None else (float(usd) / btc_price)
+    else:
+        usd = None 
+    return usd, eth, btc
+
 
 if __name__=='__main__':
     app.run_server(debug=True, port=3000)
