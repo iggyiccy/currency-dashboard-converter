@@ -27,17 +27,6 @@ df_exchanges_data = Functions_data_graphs.get_exchanges_data()
 
 #------------------------------------------------------Get the 5 year  plot-------------------------------------------------------
 
-#Code to import and download 5 years worth of pricing data (USD) for Bitcoin (BTC), Etherium (ETH), Dogecoin (DOGE), Cardano (ADA) and Polygon (MATIC).
-df_ticker_low = pd.read_csv('Data/df_ticker_low.csv', index_col=None)
-
-# Coding to create a new data which displays only closing prices for BTC, ETH, DOGE, ADA and MATIC
-df_closing_prices = pd.DataFrame()
-df_closing_prices["BTC"] = df_ticker_low["BTC-USD"]["Close"]
-df_closing_prices["ETH"] = df_ticker_low["ETH-USD"]["Close"]
-df_closing_prices["DOGE"] = df_ticker_low["DOGE-USD"]["Close"]
-df_closing_prices["ADA"] = df_ticker_low["ADA-USD"]["Close"]
-df_closing_prices["MATIC"] = df_ticker_low["MATIC-USD"]["Close"]
-df_closing_prices.index = df_ticker_low.index.date
 
 #-------------------------------------------------------Converter data--------------------------------------------------------
 
@@ -165,11 +154,9 @@ def render_page_content(pathname):
         children = [
                 html.H1('💹 Major Cryptocurrency Trend and Analysis',
                         style={'textAlign':'center'}),
-                html.Hr(),
-                dcc.Graph(
-                    id='graph',
-                    figure=df_closing_prices)
-                ]
+                html.Hr()
+        ]
+
         return children
     elif pathname == "/page-2":
         children = [
@@ -188,6 +175,7 @@ def render_page_content(pathname):
                             "Try fill up the form below to calculate how much you can convert:) ",
                             className="mb-0",),
                     ], color="light"),
+                html.Hr(style={'border':'10px solid white'}),
                 dbc.CardDeck(
                     [
                         dbc.Card(
@@ -223,7 +211,20 @@ def render_page_content(pathname):
                     ]
                 ),
                 # For the dropdown - crypto
-                html.H6('Select the currency you want to buy'),
+                html.Hr(style={'border':'10px solid white'}),
+                dbc.Card(
+                    [
+                        dbc.CardHeader("Select which currency you want to buy ⬇"),
+                        dbc.CardBody(
+                            [
+                                html.H4("Card title", className="card-title"),
+                                html.P("This is some card text", className="card-text"),
+                            ]
+                        ),
+                        dbc.CardFooter("This is the footer"),
+                    ],
+                    color="primary", outline=True, style={'border-radius':'25px','border':'2px solid'}
+                ),
                 html.Div( [
                     dcc.Dropdown(id='conv_cryp_drop',
                             options= [ 

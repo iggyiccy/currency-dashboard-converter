@@ -4,6 +4,7 @@ from requests import api
 from pycoingecko import CoinGeckoAPI
 import panel as pn
 import plotly.express as px
+import yfinance as yf
 import os  
 pn.extension("plotly")
 
@@ -267,4 +268,3 @@ def get_hist_chart(coin, curr, days='60'):
     fig = px.line(df_data, x='date', y="close", title= title )
 
     return fig
-
