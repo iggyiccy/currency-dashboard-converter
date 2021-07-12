@@ -123,14 +123,7 @@ sidebar = html.Div(
 )
 
 # define content variables
-content = html.Div(
-    children=[
-        dcc.Loading(
-            id="loading-1",
-            type="default",
-            children=html.Div(id="page-content")
-        ),
-    ], style=CONTENT_STYLE)
+content = html.Div(id="page-content", children=[], style=CONTENT_STYLE)
 
 # Style page 4 cards
 
