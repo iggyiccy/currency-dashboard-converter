@@ -281,6 +281,6 @@ def plot_5_year_plot():
     df_closing_prices["MATIC"] = df_ticker_low["MATIC-USD"]["Close"]
     df_closing_prices.index = df_ticker_low.index.date
 
-    fig = px.line(df_closing_prices, y=["BTC", "ETH", "DOGE", "ADA", "MATIC"], title= '5 year plot' )
+    fig = px.line(df_closing_prices, y=["BTC", "ETH", "DOGE", "ADA", "MATIC"], title= "Major Crypto's Five Years History & Trend" )
 
     return fig
