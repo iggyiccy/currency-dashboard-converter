@@ -515,7 +515,7 @@ def update_conv_price(cryp_drop, fiat_drop, num_coins ):
 
         children = [
             # Creating a Markdown element with the text we have generated
-            dcc.Markdown(text),
+            dcc.Markdown(text),html.Br(),
 
             # Adding another button for displaying historical prices 
             # this will trigger another callback
