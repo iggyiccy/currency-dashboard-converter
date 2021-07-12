@@ -1,61 +1,67 @@
-# currency-dashboard-converter
+# Cryptocurrency Converter Dashboard 
 
 FinTech Boot Camp Project 1 - 29/6/21 - 12/7/21
 
 ![bitcoin-world-map](Images/bitcoin_world_map.png)
 
-## Project title: The R2S2 currency converter 
+# Project Title
+The R2S2 Cryptocurrency Converter 
 
-### Team members: Simon Sakkal, Richard Patriquin, Regina Chow and Siddhesh Tungare
+# Team members
 
-### Project description/outline:
+- Simon Sakkal
+- Richard Patriquin  
+- Regina Chow
+- Siddhesh Tungare
 
-* Currency/Crypto converter with potential use of tweepy as an additional feature.
-* Currency converter which pulls info from multiple sources to provide the user with an interface to view current cryptocurrency prices in fiat currency.
+# Project Description/Outline 
 
-### Research questions to answer:
+- Dashboard to display cryptocurrency rates across the world
+- Currency converter interface to provide the user the feature to view current cryptocurrency prices in fiat currency, along with the price trends over recent timeframes
+- Provide Crypto market updates
+- Report on Crypto exchanges and their market shares
 
-### Datasets to be used:
+# Research Questions answered in the project
 
-1. Tweepy
+- As a world wide traveller, we are always looking for the best exchange rate and most discounted crypto currency we can get for the current country we are in
+- As investors, we would like a calculator which provides the conversion rate of the crypto currency to the national currency and the recent price trends
+- As a crypto investor, we are interested in visualising the price trends of the leading crypto currencies over the past few years
+- As investors, we are interested in the latest crypto market updates
+- As a person interested in investing in crypto, we would like to know the exchanges which facilitate crypto investing/trading opportunities
 
-2. Coin market cap
+# Solution Overview 
 
-3. Pycoin gecko (library)
+## Datasets
 
-### Rough breakdown of tasks:
+- Country-specific data inculding the geocode, from Kaggle.com
 
-* Simon – README and project documents
-* Richard – API’s
-* Regina – create repo and github management
-* Siddhesh – coding
+## Data-provider APIs
 
-- Dashboard -
-- tab 1: Advance mapbox (plots) (regina)
-- tab 2:  
-    - plot 1: historical price trends plot (simon)
-    - plot 2: sharp ratio plot (bond vs crypto vs stocks vs gold/sliver) (siddhest)
-    - plot 3: RSI plot
-    - plot 4: historical market volumn plot
-    - plot 5: bitcoin domainance index plot
-    - plot 6: xxx
-    - plot 7: xxx 
-    - plot 8: xxx
-- tab 3: currency converter (richard)
+- yfinance (python librry for Yahoo! Finance)
+- pyciongecko (python library for CoinGecko)
+- country.io
+- API Alternative V2
 
+## Libraries used for plotting
 
-## Note
+- plotly.express
+- dash
+- dash_bootstrap_components
 
-pn.extension('deckgl')
+## Other libraries used
 
-mapbox_style = "mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w"
+- pandas
+- numpy
+- requests
 
-                dcc.Graph(id="county-choropleth",
-                        figure=dict(
-                            layout=dict(
-                                mapbox=dict(
-                                layers=[],
-                                accesstoken=mapbox_access_token,
-                                style=mapbox_style,
-                                center=dict(lat=38.72490, lon=-95.61446),pitch=0,zoom=3.5,),
-                                autosize=True,),),),
+## Detailed documentation on individual components of dashboard
+
+- [Local Price tab](Solution_Docos/crypto_worldwide_prices.md)
+- [Analysis Tab](Solution_Docos/plot_5_years.md)
+- [Converter Tab](Solution_Docos/crypto_converter.md)
+- [Crypto Updates Tab](Solution_Docos/Crypto_Status_Updates.md)
+- [Exchanges report Tab](Solution_Docos/Crypto_exchanges_data.md)
+
+## Detailed documentation of the Dashboard application
+
+- [Dash_app](Solution_Docos/dash_app.md)
