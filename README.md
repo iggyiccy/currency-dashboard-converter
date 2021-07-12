@@ -2,7 +2,7 @@
 
 FinTech Boot Camp Project 1 - 29/6/21 - 12/7/21
 
-![bitcoin-world-map](Images/bitcoin_world_map.png)
+![bitcoin-world-map](Data/bitcoin_world_map.png)
 
 # Project Title
 The R2S2 Cryptocurrency Converter 
