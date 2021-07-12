@@ -10,7 +10,7 @@ import os
 from requests import api 
 from dotenv import load_dotenv
 from pycoingecko import CoinGeckoAPI
-from app import server
+from app import server, app
 pn.extension("plotly")
 
 import Functions_data_graphs
