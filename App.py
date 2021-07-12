@@ -10,7 +10,6 @@ import os
 from requests import api 
 from dotenv import load_dotenv
 from pycoingecko import CoinGeckoAPI
-from app import server, app
 pn.extension("plotly")
 
 import Functions_data_graphs
@@ -76,7 +75,6 @@ from dash.dependencies import Input, Output, State
 import dash_table
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LITERA], suppress_callback_exceptions=True)
-server = app.server
 
 #------------------------------------------------------ Styling ------------------------------------------------------
 
