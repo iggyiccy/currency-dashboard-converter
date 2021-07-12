@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from pycoingecko import CoinGeckoAPI
 pn.extension("plotly")
 
-mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
+mapbox_access_token = "pk.eyJ1IjoiaWdneWljY3kiLCJhIjoiY2twcnkwenNsMDhmbzJvcGlvMG5ubXZzdiJ9.fQS12Ag0w2tx0aFcNsYV1Q"
 px.set_mapbox_access_token(mapbox_access_token)
 
 ########  ----- Get the countries data - geocodes, currency codes, etc, saved in a CSV - concap.csv  -----
@@ -114,13 +114,38 @@ map1 = px.scatter_mapbox(
     df_plot,
     lat="CapitalLatitude",
     lon="CapitalLongitude",
-    color="ContinentName",
+    color="Score_chg",
     hover_name='CountryName',
     hover_data= hover_data, #['CapitalName', 'Curr_code' ],
     zoom = 2,
-    mapbox_style='basic',
+    mapbox_style='mapbox://styles/mapbox/cjcunv5ae262f2sm9tfwg8i0w',
     height=1000
 )
+
+#------------------------------------------------------  CONVERTER  ------------------------------------------------------
+
+#Crypto API URLs
+btc_url = "https://api.alternative.me/v2/ticker/Bitcoin/?convert=AUD"
+eth_url = "https://api.alternative.me/v2/ticker/Ethereum/?convert=AUD"
+btc_url = btc_url + "?format=json"
+eth_url = eth_url + "?format=json"
+# Fetch current BTC price
+btc_price = api.get(btc_url)
+# Fetch current ETH price
+eth_price = api.get(eth_url)
+btc_response = btc_price.content
+eth_response = eth_price.content
+btc_data = btc_price.json()
+eth_data = eth_price.json()
+btc_price = btc_data['data']['1']['quotes']['USD']['price']
+eth_price = eth_data['data']['1027']['quotes']['USD']['price']
+
+# Create Dataframe for ETH and BTC
+df_eth_btc = pd.DataFrame(columns=['crypto', 'USD', 'AUD'], index=None)
+df_eth_btc = df_eth_btc.append(pd.Series(['ETH', eth_price, '12000'], index= df_eth_btc.columns), ignore_index=True)
+df_eth_btc = df_eth_btc.append(pd.Series(['BTC', btc_price, '32000'], index= df_eth_btc.columns), ignore_index=True)
+df_eth_btc.set_index('crypto', inplace=True)
+
 
 #------------------------------------------------------ DASHBOARD BELOW ------------------------------------------------------
 
@@ -133,7 +158,7 @@ import dash
 import dash_bootstrap_components as dbc
 import dash_html_components as html
 import dash_core_components as dcc
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 
 
 df = pd.read_csv('https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Bootstrap/Side-Bar/iranian_students.csv')
@@ -155,8 +180,8 @@ SIDEBAR_STYLE = {
 
 # padding for the page content
 CONTENT_STYLE = {
-    "margin-left": "20rem",
-    "margin-right": "2rem",
+    "margin-left": "24rem",
+    "margin-right": "3rem",
     "padding": "2rem 1rem",
 }
 
@@ -165,16 +190,16 @@ CONTENT_STYLE = {
 # define sidebar variables
 sidebar = html.Div(
     [
-        html.H2("Currency Convertor", className="display-4"),
+        html.H2("Currency Converter", className="display-4"),
         html.Hr(),
         html.P(
             "FinTech Boot Camp Project 1 Presentation", className="lead"
         ),
         dbc.Nav(
             [
-                dbc.NavLink("Local Price", href="/", active="exact"),
-                dbc.NavLink("Analysis", href="/page-1", active="exact"),
-                dbc.NavLink("Converter", href="/page-2", active="exact"),
+                dbc.NavLink("🌍 Local Price", href="/", active="exact"),
+                dbc.NavLink("💹 Analysis", href="/page-1", active="exact"),
+                dbc.NavLink("💱 Converter", href="/page-2", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -203,13 +228,13 @@ app.layout = html.Div([
 def render_page_content(pathname):
     if pathname == "/":
         return [
-                html.H1('Cryptocurrency Price in Your Local Currency',
+                html.H1('🌍 Cryptocurrency Price in Your Local Currency',
                         style={'textAlign':'center'}),
                 dcc.Graph(id='bargraph', figure=map1)
                 ]
     elif pathname == "/page-1":
         return [
-                html.H1('Major Cryptocurrency Trend and Analysis',
+                html.H1('💹 Major Cryptocurrency Trend and Analysis',
                         style={'textAlign':'center'}),
                 dcc.Graph(id='bargraph',
                          figure=px.bar(df, barmode='group', x='Years',
@@ -217,12 +242,57 @@ def render_page_content(pathname):
                 ]
     elif pathname == "/page-2":
         return [
-                html.H1('Cryptocurrency Converter',
+                html.H1('💱 Cryptocurrency Converter',
                         style={'textAlign':'center'}),
-                dcc.Graph(id='bargraph',
-                         figure=px.bar(df, barmode='group', x='Years',
-                         y=['Girls High School', 'Boys High School']))
-                ]
+                html.Hr(),
+                dbc.Alert(
+                    [html.H2("Let's Start Converting!", className="alert-heading"),
+                        html.P(
+                            "This is a success alert with loads of extra text in it. So much "
+                            "that you can see how spacing within an alert works with this "
+                            "kind of content."
+                        ),
+                        html.Hr(),
+                        html.P(
+                            "Let's put some more text down here, but remove the bottom margin",
+                            className="mb-0",),
+                    ], color="light"),
+                dbc.CardDeck(
+                    [
+                        dbc.Card(
+                            dbc.CardBody(
+                                [
+                                    dbc.Button(html.H4("$USD"), className="btn-outline-success", color="white", style={'border':'2px solid'}),
+                                    html.Hr(),
+                                    html.P("Input $USD amount below to convert:", className="card-text",),
+                                    dbc.InputGroup([dbc.InputGroupAddon("Amount", addon_type="prepend"), dbc.Input(value=0.0, id="usd", type="number", placeholder="$1000.00", debounce=False, style={'marginRight':'10px'}, bs_size="lg")], size="lg",),
+                                ]
+                            )
+                        , color="success", outline=True, style={'border-radius':'25px','border':'2px solid'}),
+                        dbc.Card(
+                            dbc.CardBody(
+                                [
+                                    dbc.Button(html.H4("$BTC"), className="btn-outline-warning", color="white", style={'border':'2px solid'}),
+                                    html.Hr(),
+                                    html.P("Amount in $BTC:", className="card-text",),
+                                    dbc.InputGroup([dbc.InputGroupAddon("Amount", addon_type="prepend"), dbc.Input(value=btc_price, id="btc", type="number", placeholder=f"current price ${eth_price}", style={'marginRight':'10px', 'background':'white'}, bs_size="lg", disabled = True)], size="lg",),
+                                ]
+                            )
+                        , color="warning", outline=True, style={'border-radius':'25px','border':'2px solid'}),
+                        dbc.Card(
+                            dbc.CardBody(
+                                [
+                                    dbc.Button(html.H4("$ETH"), className="btn-outline-danger", color="white", style={'border':'2px solid'}),
+                                    html.Hr(),
+                                    html.P("Amount in $ETH:", className="card-text",),
+                                    dbc.InputGroup([dbc.InputGroupAddon("Amount", addon_type="prepend"), dbc.Input(value=eth_price, id="eth", type="number", placeholder=f"current price ${btc_price}", style={'marginRight':'10px', 'background':'white'}, bs_size="lg", disabled = True)], size="lg",),
+                                ]
+                            )
+                        , color="danger", outline=True, style={'border-radius':'25px','border':'2px solid'}),
+                    ]
+                )
+            ]
+
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
         [
@@ -231,6 +301,25 @@ def render_page_content(pathname):
             html.P(f"The pathname {pathname} was not recognised..."),
         ]
     )
+
+
+@app.callback(
+    Output("usd", "value"),
+    Output("eth", "value"),
+    Output("btc", "value"),
+    Input("usd", "value"),
+    Input("eth", "value"),
+    Input("btc", "value"),
+)
+def sync_input(usd, eth, btc):
+    ctx = dash.callback_context
+    input_id = ctx.triggered[0]["prop_id"].split(".")[0]
+    if input_id == "usd":
+        eth = None if usd is None else (float(usd) / eth_price)
+        btc = None if usd is None else (float(usd) / btc_price)
+    else:
+        usd = None 
+    return usd, eth, btc
 
 
 if __name__=='__main__':
