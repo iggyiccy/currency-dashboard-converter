@@ -77,6 +77,8 @@ import dash_table
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LITERA], suppress_callback_exceptions=True)
 
+server = app.server
+
 #------------------------------------------------------ Styling ------------------------------------------------------
 
 # styling the sidebar
