@@ -7,6 +7,9 @@ FinTech Boot Camp Project 1 - 29/6/21 - 12/7/21
 # Project Title
 The R2S2 Cryptocurrency Converter 
 
+# About 
+A web application build on Plotly Dash. The dashboard include feature such as cryptocurrencies converter, maps shows crypto price in local price, and pricing trend and latest crypto news.
+
 # Team members
 
 - Simon Sakkal
