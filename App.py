@@ -568,5 +568,4 @@ def on_click(cryp_drop, fiat_drop, num_coins, button_click ):
 
 
 if __name__=='__main__':
-    heroku_port = int(os.environ.get('PORT')) 
-    app.run_server(debug=True, port=heroku_port)
+    app.run_server(debug=True, port=3000)

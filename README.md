@@ -1,20 +1,23 @@
-# Cryptocurrency Converter Dashboard 
+# Cryptocurrency Converter Dashboard
 
 FinTech Boot Camp Project 1 - 29/6/21 - 12/7/21
+
+![](Data/demo.gif)
 
 ![bitcoin-world-map](Data/bitcoin_world_map.png)
 
 # Project Title
-The R2S2 Cryptocurrency Converter 
+
+The R2S2 Cryptocurrency Converter
 
 # Team members
 
 - Simon Sakkal
-- Richard Patriquin  
+- Richard Patriquin
 - Regina Chow
 - Siddhesh Tungare
 
-# Project Description/Outline 
+# Project Description/Outline
 
 - Dashboard to display cryptocurrency rates across the world
 - Currency converter interface to provide the user the feature to view current cryptocurrency prices in fiat currency, along with the price trends over recent timeframes
@@ -29,7 +32,7 @@ The R2S2 Cryptocurrency Converter
 - As investors, we are interested in the latest crypto market updates
 - As a person interested in investing in crypto, we would like to know the exchanges which facilitate crypto investing/trading opportunities
 
-# Solution Overview 
+# Solution Overview
 
 ## Datasets
 
@@ -53,6 +56,22 @@ The R2S2 Cryptocurrency Converter
 - pandas
 - numpy
 - requests
+
+## Installation
+
+create a new conda environment
+
+```
+1. conda create --name dash python=3.7
+2. conda activate dash
+```
+
+run two of these command
+
+```
+1. pip install -r requirements.txt
+2. python app.py
+```
 
 ## Detailed documentation on individual components of dashboard
 
