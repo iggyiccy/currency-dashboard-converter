@@ -568,4 +568,4 @@ def on_click(cryp_drop, fiat_drop, num_coins, button_click ):
 
 
 if __name__=='__main__':
-    app.run_server(debug=True, port=3000)
+    app.run_server(debug=True)
