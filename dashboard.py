@@ -1,6 +1,7 @@
 
 #------------------------------------------------------ DATA CLEASING & MAP  ------------------------------------------------------
-
+import sys
+import dash_bootstrap_components
 from whitenoise import WhiteNoise
 from requests import api 
 import pandas as pd
@@ -13,6 +14,9 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output
 import dash_table
 
+# dbc = sys.modules["dash_bootstrap_components"]
+# html = sys.modules["dash_html_components"]
+# dcc = sys.modules["dash_core_components"]
 
 pn.extension("plotly")
 import static.functions as functions
@@ -70,7 +74,7 @@ df_eth_btc.set_index('crypto', inplace=True)
 # Run this app with `python dash_app.py` and
 # visit http://127.0.0.1:8050/ in your web browser.
 
-
+# server = flask.Flask(__name__)
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LITERA], suppress_callback_exceptions=True)
 
 server = app.server
