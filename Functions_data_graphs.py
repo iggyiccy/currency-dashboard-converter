@@ -25,7 +25,7 @@ def get_mapbox():
         ], index= df_country_currency.columns ), ignore_index=True)
     df_country_currency.set_index('Code',inplace=True)
 
-    df_country_geocodes = pd.read_csv('Data/concap.csv', index_col=None)
+    df_country_geocodes = pd.read_csv('static/concap.csv', index_col=None)
     df_country_geocodes.dropna(inplace=True)
     df_country_geocodes.set_index('CountryCode', inplace=True)
 

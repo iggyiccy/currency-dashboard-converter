@@ -1,6 +1,6 @@
 
 #------------------------------------------------------ DATA CLEASING & MAP  ------------------------------------------------------
-
+from whitenoise import WhiteNoise
 from dash_core_components.Markdown import Markdown
 import pandas as pd
 import numpy as np
@@ -78,8 +78,9 @@ import dash_table
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LITERA], suppress_callback_exceptions=True)
 
 server = app.server
+server.wsgi_app = WhiteNoise(server.wsgi_app, root="static/")
 
-#------------------------------------------------------ Styling ------------------------------------------------------
+#------------------------------------------------------ Styling ------------------------------------------------------ 
 
 # styling the sidebar
 SIDEBAR_STYLE = {
