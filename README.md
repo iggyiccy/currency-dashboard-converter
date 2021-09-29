@@ -1,10 +1,10 @@
 # Cryptocurrency Converter Dashboard
 
-# Deployed to [Heroku](https://still-inlet-13088.herokuapp.com): https://still-inlet-13088.herokuapp.com
+## Deployed to [Heroku](https://still-inlet-13088.herokuapp.com): https://still-inlet-13088.herokuapp.com
 
-![](Data/demo.gif)
+![](static/demo.gif)
 
-![bitcoin-world-map](Data/bitcoin_world_map.png)
+![bitcoin-world-map](static/bitcoin_world_map.png)
 
 # Project Title
 
