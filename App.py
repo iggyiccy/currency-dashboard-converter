@@ -1,5 +1,6 @@
 
 #------------------------------------------------------ DATA CLEASING & MAP  ------------------------------------------------------
+
 from whitenoise import WhiteNoise
 from requests import api 
 import pandas as pd
@@ -11,6 +12,7 @@ import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
 import dash_table
+
 
 pn.extension("plotly")
 import static.functions as functions
@@ -72,7 +74,7 @@ df_eth_btc.set_index('crypto', inplace=True)
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LITERA], suppress_callback_exceptions=True)
 
 server = app.server
-server.wsgi_app = WhiteNoise(server.wsgi_app, root="static/")
+# server.wsgi_app = WhiteNoise(server.wsgi_app, root="static/")
 
 #------------------------------------------------------ Styling ------------------------------------------------------ 
 
