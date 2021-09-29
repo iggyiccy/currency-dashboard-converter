@@ -2,40 +2,39 @@
 #------------------------------------------------------ DATA CLEASING & MAP  ------------------------------------------------------
 from whitenoise import WhiteNoise
 from dash_core_components.Markdown import Markdown
+from requests import api 
+from dotenv import load_dotenv
+from pycoingecko import CoinGeckoAPI
 import pandas as pd
 import numpy as np
 import yfinance as yf
 import panel as pn
 import plotly.express as px
-import os  
-from requests import api 
-from dotenv import load_dotenv
-from pycoingecko import CoinGeckoAPI
+import sys
 pn.extension("plotly")
-
-import Functions_data_graphs
+import static.functions as functions
 
 #------------------------------------------------------Get the map plot-------------------------------------------------------
-map1 = Functions_data_graphs.get_mapbox()
+map1 = functions.get_mapbox()
 
 #---------------------------------------------------Get DF forstatus updates--------------------------------------------------
 
-df_status_updates = Functions_data_graphs.get_status_updates()
+df_status_updates = functions.get_status_updates()
 
 #--------------------------------------------------Get DF for exchanges data--------------------------------------------------
 
-df_exchanges_data = Functions_data_graphs.get_exchanges_data()
+df_exchanges_data = functions.get_exchanges_data()
 
 #------------------------------------------------------Get the 5 year  plot-------------------------------------------------------
 
-plot_5_year_fig = Functions_data_graphs.plot_5_year_plot()
+plot_5_year_fig = functions.plot_5_year_plot()
 
 #-------------------------------------------------------Converter data--------------------------------------------------------
 
 crypto_coins = ['bitcoin','ethereum','litecoin','ripple','eos','monero','stellar']
 fiat = ['usd','aud','eur','gbp','cad','sgd']
 
-df_cryp_fiat_conv = Functions_data_graphs.get_crypto_fiat_conv(  crypto_coins = crypto_coins, fiat = fiat )
+df_cryp_fiat_conv = functions.get_crypto_fiat_conv(  crypto_coins = crypto_coins, fiat = fiat )
 
 #------------------------------------------------------  CONVERTER  ------------------------------------------------------
 
@@ -556,7 +555,7 @@ def on_click(cryp_drop, fiat_drop, num_coins, button_click ):
     # %s
     # '''% (text_1, text_2)
 
-    plot = Functions_data_graphs.get_hist_chart(cryp_drop, fiat_drop, '60' )
+    plot = functions.get_hist_chart(cryp_drop, fiat_drop, '60' )
 
     children = [
 
