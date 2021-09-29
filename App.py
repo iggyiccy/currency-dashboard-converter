@@ -1,16 +1,17 @@
 
 #------------------------------------------------------ DATA CLEASING & MAP  ------------------------------------------------------
 from whitenoise import WhiteNoise
-from dash_core_components.Markdown import Markdown
 from requests import api 
-from dotenv import load_dotenv
-from pycoingecko import CoinGeckoAPI
 import pandas as pd
-import numpy as np
-import yfinance as yf
 import panel as pn
 import plotly.express as px
-import sys
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output
+import dash_table
+
 pn.extension("plotly")
 import static.functions as functions
 
@@ -67,12 +68,6 @@ df_eth_btc.set_index('crypto', inplace=True)
 # Run this app with `python dash_app.py` and
 # visit http://127.0.0.1:8050/ in your web browser.
 
-import dash
-import dash_bootstrap_components as dbc
-import dash_html_components as html
-import dash_core_components as dcc
-from dash.dependencies import Input, Output, State
-import dash_table
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LITERA], suppress_callback_exceptions=True)
 
@@ -568,4 +563,4 @@ def on_click(cryp_drop, fiat_drop, num_coins, button_click ):
 
 
 if __name__=='__main__':
-    app.run_server(debug=True)
+    app.run_server()
